@@ -64,9 +64,9 @@ def schedule_shift(admin_id, staff_id, schedule_id, start_time, end_time):
     return new_shift
 
 
-def get_shift_report(admin_id):
+def get_shift_report(admin_id, schedule_id):
     admin = get_user(admin_id)
     if not isinstance(admin, Admin):
         raise PermissionError("Only admins can view shift reports")
 
-    return admin.get_shift_report()
+    return admin.get_shift_report(schedule_id)
