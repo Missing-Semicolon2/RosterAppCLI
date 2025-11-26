@@ -1,6 +1,5 @@
-from App.models import User, Admin, Staff, Shift
+from App.models import User, Admin, Staff
 from App.database import db
-from datetime import datetime
 
 VALID_ROLES = {"user", "staff", "admin"}
 

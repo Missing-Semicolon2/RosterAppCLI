@@ -1,6 +1,5 @@
 from App.models import Admin, Shift, Staff, Schedule
 from App.database import db
-from datetime import datetime
 from App.controllers.user import get_user
 
 def create_schedule(admin_id, schedule_name, start_date_str): #Not sure why this was missing # Modified

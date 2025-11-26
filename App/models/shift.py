@@ -1,5 +1,4 @@
 from App.database import db
-from App.models.staff import Staff
 
 class Shift(db.Model):
     id = db.Column(db.Integer, primary_key=True)
