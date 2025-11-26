@@ -15,7 +15,7 @@ class Admin(User):
 
     def create_schedule(self, name, start_date_str):
         start_date = datetime.strptime(start_date_str, '%Y-%m-%d').date()
-        new_schedule = Schedule(name=name, created_by=self.id, created_at=datetime.utcnow(), start_date=start_date)
+        new_schedule = Schedule(name=name, created_by=self.id, created_at=datetime.now(), start_date=start_date)
         db.session.add(new_schedule)
         db.session.commit()
         return new_schedule

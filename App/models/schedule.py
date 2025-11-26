@@ -4,7 +4,7 @@ from App.database import db
 class Schedule(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(50), nullable=False)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    created_at = db.Column(db.DateTime, default=datetime.now)
     created_by = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
     start_date = db.Column(db.Date, nullable=False)
     strategy_type = db.Column(db.String(50), nullable=True)
