@@ -6,6 +6,8 @@ class Schedule(db.Model):
     name = db.Column(db.String(50), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     created_by = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
+    start_date = db.Column(db.Date, nullable=False)
+    strategy_type = db.Column(db.String(50), nullable=True)
     shifts = db.relationship("Shift", backref="schedule", lazy=True)
 
     def shift_count(self):
@@ -20,5 +22,9 @@ class Schedule(db.Model):
             "shift_count": self.shift_count(),
             "shifts": [shift.get_json() for shift in self.shifts]
         }
+    
+    def set_strategy(self, strategy_type):
+        self.strategy_type = strategy_type
+        db.session.commit()
 
 
