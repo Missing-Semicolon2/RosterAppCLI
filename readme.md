@@ -203,12 +203,9 @@ def user_tests_command(type):
     else:
         sys.exit(pytest.main(["-k", "User"]))
 ```
+TEST REPORT
+<img width="678" height="555" alt="image" src="https://github.com/user-attachments/assets/fbccd074-2f8e-4608-9050-5918646e4054" />
 
-You can then execute all user tests as follows
-
-```bash
-$ flask test user
-```
 
 You can also supply "unit" or "int" at the end of the comand to execute only unit or integration tests.
 
