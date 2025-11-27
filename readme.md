@@ -204,6 +204,8 @@ def user_tests_command(type):
         sys.exit(pytest.main(["-k", "User"]))
 ```
 TEST REPORT
+
+
 <img width="678" height="555" alt="image" src="https://github.com/user-attachments/assets/fbccd074-2f8e-4608-9050-5918646e4054" />
 
 
