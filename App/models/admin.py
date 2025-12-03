@@ -1,4 +1,5 @@
 from datetime import datetime
+from sqlalchemy import func
 from App.database import db
 from .user import User
 from App.models import Schedule, Shift, Staff
@@ -34,5 +35,43 @@ class Admin(User):
         # Do not commit yet; return for confirmation
         return shifts, warnings, schedule
 
-    def get_shift_report(self):
-        return [shift.get_json() for shift in Shift.query.order_by(Shift.start_time).all()]
+    def get_shift_report(self, schedule_id):
+        schedule = db.session.get(Schedule, schedule_id)
+        if not schedule:
+            raise ValueError("Invalid Schedule ID")
+
+        staff_shifts = db.session.query(
+            Staff.id,
+            Staff.username,
+            func.count(Shift.id).label('shift_count'),
+            func.sum(
+                func.case(
+                    [(Shift.clock_out.isnot(None), (func.extract('epoch', Shift.clock_out - Shift.clock_in) / 3600.0))],
+                    else_=0.0
+                )
+            ).label('total_hours')
+        ).join(Shift, Shift.staff_id == Staff.id) \
+         .filter(Shift.schedule_id == schedule_id) \
+         .filter(Shift.clock_in.isnot(None), Shift.clock_out.isnot(None)).group_by(Staff.id, Staff.username) \
+         .all()
+        
+        report = []
+        for staff_id, username, shift_count, total_hours in staff_shifts:
+            report.append({
+                'username': username,
+                'total_hours_worked': round(total_hours, 2),  # Rounded because we are human not machines(sort of)
+                'number_of_shifts_worked': shift_count
+            })
+        
+        # Include staff with 0 shifts/hours
+        all_staff = Staff.query.all()
+        reported_usernames = {r['username'] for r in report}
+        for staff in all_staff:
+            if staff.username not in reported_usernames:
+                report.append({
+                    'username': staff.username,
+                    'total_hours_worked': 0.0,
+                    'number_of_shifts_worked': 0
+                }) 
+        
+        return sorted(report, key=lambda x: x['username'])
