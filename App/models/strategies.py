@@ -1,9 +1,9 @@
 from datetime import datetime, timedelta, time
 from abc import ABC, abstractmethod
 from typing import List, Tuple
-from App.models.schedule import Schedule
 from App.models.staff import Staff
 from App.models.shift import Shift
+from App.models.schedule import Schedule
 
 def is_day(start_time: datetime):
     return start_time.hour < 12
